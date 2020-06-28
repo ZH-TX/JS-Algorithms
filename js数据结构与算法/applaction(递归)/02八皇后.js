@@ -9,6 +9,7 @@ class queen8{
     
     constructor(n){
         this.count=0
+        this.judgeCount=0
         this.max=n
         this.array=Array(n)
     }
@@ -16,6 +17,7 @@ class queen8{
     // no:代表第no个皇后,表示地no个皇后是否与前面的冲突
     //判断是否冲突, 列冲突, 斜线冲突
     judge(n){
+        this.judgeCount++
         for (let i = 0; i < n; i++) {
             let num=this.array[i]-this.array[n]
             if(num==0||Math.abs(i-n)==Math.abs(num)){return false};
@@ -49,4 +51,4 @@ class queen8{
 //测试
 let q=new queen8(8)
 q.mian(0)
-console.log(q.count);
+console.log(`总解法:${q.count}`,`回溯:${q.judgeCount}`);
