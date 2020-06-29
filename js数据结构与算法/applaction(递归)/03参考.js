@@ -108,14 +108,15 @@ function knightTour(n) {
     const moves = [];
   
     // Do first move and place the knight to the 0x0 cell.
-    const firstMove = [0, 0];
+    const firstMove = [3, 0];
     moves.push(firstMove);
     chessboard[firstMove[0]][firstMove[0]] = 1;
   
     // Recursively try to do the next move.
     const solutionWasFound = knightTourRecursive(chessboard, moves);
-  
+    console.log(chessboard);
+    
     return solutionWasFound ? moves : [];
   }
 
-  console.log(knightTour(5));
+  console.log(knightTour(6));
