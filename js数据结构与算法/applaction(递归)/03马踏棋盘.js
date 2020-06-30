@@ -10,6 +10,7 @@ class HorseBoard {
         // this.Y = y;
         this.count =0
         this.board = []
+        this.visited=[] //所有位置是否均被访问this.board.length ** 2, true
         this.moves=[]
         for (let i = 0; i < x; i++) {
             this.board[i] = []
@@ -44,8 +45,15 @@ class HorseBoard {
         return chessboard[move[0]][move[1]] == 0;
     }
 
-    isBoardCompletelyVisited() {
+    isCompletelyVisited() {
         return (this.board.length ** 2) === this.count;
+    }
+    reSort(curBoard,moves){
+        moves.sort((a,b)=>{
+            let x=this.getPossibleMoves(curBoard,a).length
+            let y=this.getPossibleMoves(curBoard,b).length
+            return x-y
+        })
     }
     //进行回溯(核心)现在存在问题
     /**
@@ -55,32 +63,32 @@ class HorseBoard {
      */
     knightTourRecursive(chessboard, move) {
         const curBoard = chessboard;
-       
-       //代表第一个
-        // this.moves.push(move)
-        let possibleMoves = this.getPossibleMoves(curBoard, move);
         curBoard[move[0]][move[1]] = ++this.count
-        //如何达到回溯的功能呢??回退上一个点,的其他位置
-        // if(possibleMoves.length==0){
+        let possibleMoves = this.getPossibleMoves(curBoard, move);
+        // this.visited[move[0]*this.board.length+move[1]]=true
+        // let move1=possibleMoves[?]
+        // this.getPossibleMoves(curBoard,move1).length
 
-        // }
+        this.reSort(curBoard,possibleMoves)
+
+
         for (let i = 0; i < possibleMoves.length; i++) {
-            let currentMove = possibleMoves[i];//第一个点,所有能走二维数组集合
+            let currentMove = possibleMoves[i];//第一个点,所有能走二维数组集合,走过的不能再放在里面
 
             if (this.isMoveAllowed(curBoard, currentMove)) {
                 move=currentMove
                 this.knightTourRecursive(curBoard,move)
-                
-            }else{
-                //这个一点行不通
-            }
-        }
-        // this.moves.pop()
-        // move=this.moves[this.moves.length-1]
-        // curBoard[move[0]][move[1]]=0
 
-        if (!this.isBoardCompletelyVisited()) {
-            curBoard[move[0]][move[1]]=0
+                this.count--;
+                curBoard[move[0]][move[1]]=0
+            }
+           
+        }
+        //使用贪心算法进行优化
+
+        if (this.isCompletelyVisited()) {
+            return
+                
         }
 
     }
@@ -97,7 +105,7 @@ class HorseBoard {
 
 //最后直接将走的棋盘位置给记录下来
 let board = new HorseBoard(6,6)
-let a=board.main([0,0])
+// let a=board.main([0,0])
 
-// let a=board.main([2,1])
+let a=board.main([4,1]) //这个代表行与列,先行后列
 console.log(a);

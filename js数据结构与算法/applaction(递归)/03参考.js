@@ -33,7 +33,7 @@ function getPossibleMoves(chessboard, position) {
 
    //判断move点是否可以走
   function isMoveAllowed(chessboard, move) {
-    return chessboard[move[0]][move[1]] !== 1;
+    return chessboard[move[0]][move[1]] == 0;
   }
   
   /**
@@ -66,7 +66,7 @@ function getPossibleMoves(chessboard, position) {
     // Get next possible knight moves.
     const lastMove = moves[moves.length - 1];
     const possibleMoves = getPossibleMoves(currentChessboard, lastMove);
-  
+    let count=1;
     // Try to do next possible moves.
     for (let moveIndex = 0; moveIndex < possibleMoves.length; moveIndex += 1) {
       const currentMove = possibleMoves[moveIndex];
@@ -76,7 +76,7 @@ function getPossibleMoves(chessboard, position) {
       if (isMoveAllowed(currentChessboard, currentMove)) {
         // Actually do the move.
         moves.push(currentMove);
-        currentChessboard[currentMove[0]][currentMove[1]] = 1;
+        currentChessboard[currentMove[0]][currentMove[1]] = ++count;
   
         // If further moves starting from current are successful then
         // return true meaning the solution is found.
@@ -87,6 +87,7 @@ function getPossibleMoves(chessboard, position) {
         // BACKTRACKING.
         // If current move was unsuccessful then step back and try to do another move.
         moves.pop();
+        count--
         currentChessboard[currentMove[0]][currentMove[1]] = 0;
       }
     }
@@ -108,7 +109,7 @@ function knightTour(n) {
     const moves = [];
   
     // Do first move and place the knight to the 0x0 cell.
-    const firstMove = [3, 0];
+    const firstMove = [1, 0];
     moves.push(firstMove);
     chessboard[firstMove[0]][firstMove[0]] = 1;
   
@@ -119,4 +120,4 @@ function knightTour(n) {
     return solutionWasFound ? moves : [];
   }
 
-  console.log(knightTour(6));
+  console.log(knightTour(4));
